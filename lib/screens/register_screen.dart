@@ -5,22 +5,23 @@ import 'package:flutter_auth/components/my_textfield.dart';
 import 'package:flutter_auth/components/square_tile.dart';
 import 'package:gap/gap.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final Function()? onTap;
-  const LoginScreen({super.key, required this.onTap});
+  const RegisterScreen({super.key, required this.onTap});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   // text editing controllers
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
-  // sign user in
-  void signUserIn() async {
+  // sign user up method
+  void signUserUp() async {
     // show loading circle
     showDialog(
       context: context,
@@ -28,12 +29,18 @@ class _LoginScreenState extends State<LoginScreen> {
         child: CircularProgressIndicator(),
       ),
     );
-    // try sign in
+    // try creating user account
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      // 두 비밀번호가 같은 지 확인하기
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        // 에러 메세지로 다름을 알림
+        showErrorMessage("비밀번호가 일치하지 않습니다.");
+      }
       // pop the loading circle
       Navigator.pop(context);
     } on FirebaseAuthException {
@@ -71,16 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Gap(50),
+                const Gap(25),
                 // logo
                 const Icon(
                   Icons.lock,
-                  size: 100,
+                  size: 50,
                 ),
                 const Gap(50),
-                // welcome back, you've been missed!
+                // Let's create your account!"
                 Text(
-                  "Welcome back, you've been missed!",
+                  "Let's create your account!",
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -100,34 +107,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Password',
                   obscureText: true,
                 ),
-                // forgot password?
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                const Gap(10),
+                // confirm password textfield
+                MyTextField(
+                  controller: confirmPasswordController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
                 ),
+                // forgot password?
+
                 const Gap(25),
                 // sign in button
                 MyButton(
-                  text: "Sign In",
-                  // login button
+                  // register button
+                  text: 'Register',
                   onTap: () {
-                    signUserIn();
+                    signUserUp();
                   },
                 ),
                 const Gap(50),
@@ -177,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member?',
+                      'Already have an account?',
                       style: TextStyle(
                         color: Colors.grey[700],
                       ),
@@ -186,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                        'Register now',
+                        'Login now',
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
