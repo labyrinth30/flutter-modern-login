@@ -33,8 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // try sign in
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
       // pop the loading circle
       Navigator.pop(context);

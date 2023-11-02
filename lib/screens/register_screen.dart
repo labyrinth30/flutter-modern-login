@@ -35,8 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // 두 비밀번호가 같은 지 확인하기
       if (passwordController.text == confirmPasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
         );
       } else {
         // 에러 메세지로 다름을 알림
