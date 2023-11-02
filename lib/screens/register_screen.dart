@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/components/my_button.dart';
 import 'package:flutter_auth/components/my_textfield.dart';
 import 'package:flutter_auth/components/square_tile.dart';
+import 'package:flutter_auth/services/auth_service.dart';
 import 'package:gap/gap.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -156,14 +157,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const Gap(20),
                 // google + apple sign in buttons
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // google button
-                    SquareTile(imagePath: 'lib/images/google.png'),
-                    Gap(10),
+                    SquareTile(
+                      imagePath: 'lib/images/google.png',
+                      onTap: () => AuthService().signInWithGoogle(),
+                    ),
+                    const Gap(10),
                     // apple button
-                    SquareTile(imagePath: 'lib/images/apple.png'),
+                    SquareTile(
+                      imagePath: 'lib/images/apple.png',
+                      onTap: () {},
+                    ),
                   ],
                 ),
                 const Gap(50),

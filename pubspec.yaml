@@ -38,6 +38,8 @@ dependencies:
   gap: ^3.0.1
   firebase_core: ^2.21.0
   firebase_auth: ^4.12.1
+  google_sign_in: ^6.1.5
+  kakao_flutter_sdk: ^1.6.1
 
 dev_dependencies:
   flutter_test:

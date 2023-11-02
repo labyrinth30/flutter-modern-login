@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/components/my_button.dart';
 import 'package:flutter_auth/components/my_textfield.dart';
 import 'package:flutter_auth/components/square_tile.dart';
+import 'package:flutter_auth/screens/forgot_password_screen.dart';
+import 'package:flutter_auth/services/auth_service.dart';
 import 'package:gap/gap.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -100,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Password',
                   obscureText: true,
                 ),
+                const Gap(10),
                 // forgot password?
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -108,8 +111,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        onPressed: () {},
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ForgotPasswordScreen();
+                              },
+                            ),
+                          );
+                        },
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
@@ -161,14 +173,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Gap(20),
                 // google + apple sign in buttons
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // google button
-                    SquareTile(imagePath: 'lib/images/google.png'),
-                    Gap(10),
+                    SquareTile(
+                      imagePath: 'lib/images/google.png',
+                      onTap: () => AuthService().signInWithGoogle(),
+                    ),
+                    const Gap(10),
                     // apple button
-                    SquareTile(imagePath: 'lib/images/apple.png'),
+                    SquareTile(
+                      imagePath: 'lib/images/apple.png',
+                      onTap: () {},
+                    ),
                   ],
                 ),
                 const Gap(50),
